@@ -1,6 +1,7 @@
 package nba.stats.models;
 
 import java.lang.annotation.Inherited;
+import java.sql.Time;
 
 @Entity
 public class FicheJoueur {
@@ -19,7 +20,7 @@ public class FicheJoueur {
     double deuxp;
     double troisp;
     double ppm;
-    double mpm;
+    Time mpm;
     double mj;
     double m;
 
@@ -78,10 +79,10 @@ public class FicheJoueur {
     public void setPpm(double ppm) {
         this.ppm = ppm;
     }
-    public double getMpm() {
+    public Time getMpm() {
         return mpm;
     }
-    public void setMpm(double mpm) {
+    public void setMpm(Time mpm) {
         this.mpm = mpm;
     }
     public double getMj() {
