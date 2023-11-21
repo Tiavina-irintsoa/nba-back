@@ -3,9 +3,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import nba.stats.models.Equipe;
-@Entity
+import jakarta.persistence.Table;
+@Entity(name="EQUIPE")
+@Table(name="equipe")
 public class Equipe {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int idEquipe ;
     String nomEquipe;
     String  abreviation;
