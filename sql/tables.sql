@@ -58,3 +58,16 @@ add column idpossession serial  primary key;
 
 alter table joueur_equipe
 add column idjoueur_equipe serial primary key;
+
+
+
+alter table rebond 
+add column idrebond serial  primary key;
+
+
+alter table passedecisive 
+add column idpassedecisive serial  primary key;
+
+alter table points 
+add column idpoints serial  primary key;
+
