@@ -19,7 +19,7 @@ public class Match {
 
     public static Match copyAndControle(Match Match) throws Exception {
         Match j = new Match();
-        j.setNomMatch(Match.getNomMatch());
+        j.update(Match);
         return j;
     }
 
