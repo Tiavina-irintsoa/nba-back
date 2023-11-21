@@ -7,7 +7,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class CORSConfig {
-
     @Bean
     public WebMvcConfigurer CORSConfigurer(){
         return new WebMvcConfigurer() {
