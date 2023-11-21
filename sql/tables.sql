@@ -52,3 +52,6 @@ create table possession(
     fin time
 );
 
+
+alter table possession 
+add column idpossession serial  primary key;
