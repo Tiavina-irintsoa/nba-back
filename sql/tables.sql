@@ -1,14 +1,15 @@
+create table equipe(
+    idEquipe serial primary key, 
+    nomEquipe VARCHAR,
+    abreviation VARCHAR
+);
+
 create table joueur (
     idJoueur serial primary key,
     nomJoueur VARCHAR,
     idEquipeActuelle integer not null references equipe(idEquipe)
 ); 
 
-create table equipe(
-    idEquipe serial primary key, 
-    nomEquipe VARCHAR,
-    abreviation VARCHAR
-);
 
 create table joueur_equipe(
     idEquipe integer not null references equipe(idEquipe),
