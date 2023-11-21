@@ -24,7 +24,7 @@ public class Match {
     }
 
     public void update(Match m) throws Exception {
-        setDatedebut(m.getDatedebut());
+            setDatedebut(m.getDatedebut());
         setEquipe1(m.getEquipe1());
         setEquipe2t(m.getEquipe2());
         setLieu(m.getLieu());
