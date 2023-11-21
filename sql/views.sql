@@ -1,25 +1,24 @@
 create or replace view v_lancer_front as (
     select 
     *
-    from points where points = 1;
+    from points where points = 1
 );
 create or replace view v_2_points as (
     select 
     *
-    from points where points = 2;
+    from points where points = 2
 );
 
-
-create table v_3_points as (select * from points where points = 3);
-create view v_statistiques as (
+create or replace view v_3_points as (select * from points where points = 3);
+create or replace  view v_statistiques as (
     select 
-    idjoueur,nomJoueur,equipe.idEquipe,equipe.nomEquipe,equipe.abreviation,coalesce(count(rebond.idMatchEffectif)/count(idMatchEffectif),0) as rebond,coalesce(count(passedecisive.idMatchEffectif)/count(idMatchEffectif),0) as pdpm,coalesce(count(v_lancer_front.idMatchEffectif)/count(idMatchEffectif),0) as lf, coalesce(count(v_2_points.idMatchEffectif)/count(idMatchEffectif)),0) as deuxp, coalesce(count(v_3_points.idMatchEffectif)/count(idMatchEffectif),0) as troisp, coalesce(sum(points.points)/count(idMatchEffectif),0) as ppm, coalesce(sum(possession.fin-possession.debut)/count(idMatchEffectif),0) as mpm
+    joueur.idjoueur,nomJoueur,equipe.idEquipe,equipe.nomEquipe,equipe.abreviation,coalesce(count(rebond.idMatchEffectif)/count(matchEffectif.idMatchEffectif),0) as rebond,coalesce(count(passedecisive.idMatchEffectif)/count(matchEffectif.idMatchEffectif),0) as pdpm,coalesce(count(v_lancer_front.idMatchEffectif)/count(matchEffectif.idMatchEffectif),0) as lf, coalesce(count(v_2_points.idMatchEffectif)/count(matchEffectif.idMatchEffectif),0) as deuxp, coalesce(count(v_3_points.idMatchEffectif)/count(matchEffectif.idMatchEffectif),0) as troisp, coalesce(sum(points.points)/count(matchEffectif.idMatchEffectif),0) as ppm, coalesce(sum(possession.fin-possession.debut)/count(matchEffectif.idMatchEffectif),'00:00'::interval) as mpm
     from joueur
     join equipe
         on joueur.idEquipeActuelle = equipe.idEquipe
     join match
-        on match.idEquipe1 = equipe.idEquipe
-        or match.idEquipe2 = equipe.idEquipe2
+        on match.equipe1 = equipe.idEquipe
+        or match.equipe2 = equipe.idEquipe
     join matchEffectif
         on match.idMatch = matchEffectif.idMatch
     left join rebond 
@@ -36,6 +35,5 @@ create view v_statistiques as (
      on v_3_points.idMatchEffectif = matchEffectif.idMatchEffectif
      left join possession
      on possession.idMatchEffectif = matchEffectif.idMatchEffectif
-    group by idjoueur,nomJoueur,equipe.idEquipe,equipe.nomEquipe,equipe.abreviation
+    group by joueur.idjoueur,joueur.nomJoueur,equipe.idEquipe,equipe.nomEquipe,equipe.abreviation
 );
-
