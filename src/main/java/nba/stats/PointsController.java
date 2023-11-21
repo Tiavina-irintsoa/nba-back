@@ -1,7 +1,7 @@
 package nba.stats;
 
-import nba.stats.models.Joueur;
-import nba.stats.services.JoueurService;
+import nba.stats.models.Points;
+import nba.stats.services.PointsService;
 import nba.stats.tools.Util;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/joueurs")
-public class JoueurController {
+@RequestMapping("/Points")
+public class PointsController {
   @Autowired
-  private JoueurService joueurService;
+  private PointsService PointsService;
 
   @GetMapping
   public ResponseEntity<Map<String, Object>> list() {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      response.put("data", joueurService.list());
+      response.put("data", PointsService.list());
       return new ResponseEntity<>(response, HttpStatus.OK);
     } catch (Exception e) {
       response.put("error", e.getMessage());
@@ -44,12 +44,12 @@ public class JoueurController {
       @PathVariable("id") String id) {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      Optional<Joueur> joueur = joueurService.findById(id);
-      if (joueur.isPresent()) {
-        response.put("data", joueur.get());
+      Optional<Points> Points = PointsService.findById(id);
+      if (Points.isPresent()) {
+        response.put("data", Points.get());
         return new ResponseEntity<>(response, HttpStatus.OK);
       }
-      response.put("error", "Joueur inexistant");
+      response.put("error", "Points inexistant");
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     } catch (Exception e) {
       response.put("error", e.getMessage());
@@ -59,11 +59,11 @@ public class JoueurController {
 
   @PostMapping
   public ResponseEntity<Map<String, Object>> insert(
-      @RequestBody Joueur joueur) {
+      @RequestBody Points Points) {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      joueur = Joueur.copyAndControle(joueur);
-      Joueur inserted = joueurService.insert(joueur);
+      Points = Points.copyAndControle(Points);
+      Points inserted = PointsService.insert(Points);
       response.put("data", inserted);
 
       return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -76,19 +76,19 @@ public class JoueurController {
   @PutMapping("/{id}")
   public ResponseEntity<Map<String, Object>> update(
       @PathVariable("id") String id,
-      @RequestBody Joueur joueur) {
+      @RequestBody Points Points) {
 
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      joueur = Joueur.copyAndControle(joueur);
-      Optional<Joueur> to_update = joueurService.findById(id);
+      Points = Points.copyAndControle(Points);
+      Optional<Points> to_update = PointsService.findById(id);
       if (to_update.isPresent()) {
-        Joueur updated = new Joueur();
-        updated.update(joueur);
-        response.put("data", joueurService.insert(updated));
+        Points updated = new Points();
+        updated.update(Points);
+        response.put("data", PointsService.insert(updated));
         return new ResponseEntity<>(response, HttpStatus.OK);
       }
-      response.put("error", "Joueur inexistant");
+      response.put("error", "Points inexistante");
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     } catch (Exception e) {
       response.put("error", e.getMessage());
@@ -100,7 +100,7 @@ public class JoueurController {
   public ResponseEntity<Map<String, Object>> deleteById(@PathVariable("id") String id) {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      joueurService.deleteById(id);
+      PointsService.deleteById(id);
       return new ResponseEntity<>(response, HttpStatus.OK);
     } catch (Exception e) {
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);

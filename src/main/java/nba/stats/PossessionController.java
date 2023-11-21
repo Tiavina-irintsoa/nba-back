@@ -1,7 +1,7 @@
 package nba.stats;
 
-import nba.stats.models.Joueur;
-import nba.stats.services.JoueurService;
+import nba.stats.models.Possession;
+import nba.stats.services.PossessionService;
 import nba.stats.tools.Util;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/joueurs")
-public class JoueurController {
+@RequestMapping("/possessions")
+public class PossessionController {
   @Autowired
-  private JoueurService joueurService;
+  private PossessionService PossessionService;
 
   @GetMapping
   public ResponseEntity<Map<String, Object>> list() {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      response.put("data", joueurService.list());
+      response.put("data", PossessionService.list());
       return new ResponseEntity<>(response, HttpStatus.OK);
     } catch (Exception e) {
       response.put("error", e.getMessage());
@@ -44,12 +44,12 @@ public class JoueurController {
       @PathVariable("id") String id) {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      Optional<Joueur> joueur = joueurService.findById(id);
-      if (joueur.isPresent()) {
-        response.put("data", joueur.get());
+      Optional<Possession> Possession = PossessionService.findById(id);
+      if (Possession.isPresent()) {
+        response.put("data", Possession.get());
         return new ResponseEntity<>(response, HttpStatus.OK);
       }
-      response.put("error", "Joueur inexistant");
+      response.put("error", "Possession inexistant");
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     } catch (Exception e) {
       response.put("error", e.getMessage());
@@ -59,11 +59,11 @@ public class JoueurController {
 
   @PostMapping
   public ResponseEntity<Map<String, Object>> insert(
-      @RequestBody Joueur joueur) {
+      @RequestBody Possession Possession) {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      joueur = Joueur.copyAndControle(joueur);
-      Joueur inserted = joueurService.insert(joueur);
+      Possession = Possession.copyAndControle(Possession);
+      Possession inserted = PossessionService.insert(Possession);
       response.put("data", inserted);
 
       return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -76,19 +76,19 @@ public class JoueurController {
   @PutMapping("/{id}")
   public ResponseEntity<Map<String, Object>> update(
       @PathVariable("id") String id,
-      @RequestBody Joueur joueur) {
+      @RequestBody Possession Possession) {
 
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      joueur = Joueur.copyAndControle(joueur);
-      Optional<Joueur> to_update = joueurService.findById(id);
+      Possession = Possession.copyAndControle(Possession);
+      Optional<Possession> to_update = PossessionService.findById(id);
       if (to_update.isPresent()) {
-        Joueur updated = new Joueur();
-        updated.update(joueur);
-        response.put("data", joueurService.insert(updated));
+        Possession updated = new Possession();
+        updated.update(Possession);
+        response.put("data", PossessionService.insert(updated));
         return new ResponseEntity<>(response, HttpStatus.OK);
       }
-      response.put("error", "Joueur inexistant");
+      response.put("error", "Possession inexistant");
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     } catch (Exception e) {
       response.put("error", e.getMessage());
@@ -100,7 +100,7 @@ public class JoueurController {
   public ResponseEntity<Map<String, Object>> deleteById(@PathVariable("id") String id) {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      joueurService.deleteById(id);
+      PossessionService.deleteById(id);
       return new ResponseEntity<>(response, HttpStatus.OK);
     } catch (Exception e) {
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);

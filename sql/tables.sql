@@ -1,14 +1,15 @@
+create table equipe(
+    idEquipe serial primary key, 
+    nomEquipe VARCHAR,
+    abreviation VARCHAR
+);
+
 create table joueur (
     idJoueur serial primary key,
     nomJoueur VARCHAR,
     idEquipeActuelle integer not null references equipe(idEquipe)
 ); 
 
-create table equipe(
-    idEquipe serial primary key, 
-    nomEquipe VARCHAR,
-    abreviation VARCHAR
-);
 
 create table joueur_equipe(
     idEquipe integer not null references equipe(idEquipe),
@@ -50,4 +51,23 @@ create table possession(
     debut time,
     fin time
 );
+
+
+alter table possession 
+add column idpossession serial  primary key;
+
+alter table joueur_equipe
+add column idjoueur_equipe serial primary key;
+
+
+
+alter table rebond 
+add column idrebond serial  primary key;
+
+
+alter table passedecisive 
+add column idpassedecisive serial  primary key;
+
+alter table points 
+add column idpoints serial  primary key;
 

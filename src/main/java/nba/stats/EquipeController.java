@@ -1,7 +1,7 @@
 package nba.stats;
 
-import nba.stats.models.Joueur;
-import nba.stats.services.JoueurService;
+import nba.stats.models.Equipe;
+import nba.stats.services.EquipeService;
 import nba.stats.tools.Util;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/joueurs")
-public class JoueurController {
-  @Autowired
-  private JoueurService joueurService;
-
+@RequestMapping("/equipes")
+public class EquipeController {
+    @Autowired
+    private EquipeService equipeService;
+    
   @GetMapping
   public ResponseEntity<Map<String, Object>> list() {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      response.put("data", joueurService.list());
+      response.put("data", equipeService.list());
       return new ResponseEntity<>(response, HttpStatus.OK);
     } catch (Exception e) {
       response.put("error", e.getMessage());
@@ -41,15 +41,16 @@ public class JoueurController {
 
   @GetMapping("/{id}")
   public ResponseEntity<Map<String, Object>> findById(
-      @PathVariable("id") String id) {
+    @PathVariable("id") String id
+  ) {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      Optional<Joueur> joueur = joueurService.findById(id);
-      if (joueur.isPresent()) {
-        response.put("data", joueur.get());
+      Optional<Equipe> equipe = equipeService.findById(id);
+      if (equipe.isPresent()) {
+        response.put("data", equipe.get());
         return new ResponseEntity<>(response, HttpStatus.OK);
       }
-      response.put("error", "Joueur inexistant");
+      response.put("error", "Equipe inexistant");
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     } catch (Exception e) {
       response.put("error", e.getMessage());
@@ -59,11 +60,12 @@ public class JoueurController {
 
   @PostMapping
   public ResponseEntity<Map<String, Object>> insert(
-      @RequestBody Joueur joueur) {
+    @RequestBody Equipe equipe
+  ) {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      joueur = Joueur.copyAndControle(joueur);
-      Joueur inserted = joueurService.insert(joueur);
+        equipe = Equipe.copyAndControle(equipe);
+      Equipe inserted = equipeService.insert(equipe);
       response.put("data", inserted);
 
       return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -75,20 +77,21 @@ public class JoueurController {
 
   @PutMapping("/{id}")
   public ResponseEntity<Map<String, Object>> update(
-      @PathVariable("id") String id,
-      @RequestBody Joueur joueur) {
+    @PathVariable("id") String id,
+    @RequestBody Equipe equipe
+  ) {
 
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      joueur = Joueur.copyAndControle(joueur);
-      Optional<Joueur> to_update = joueurService.findById(id);
+        equipe = Equipe.copyAndControle(equipe);
+      Optional<Equipe> to_update = equipeService.findById(id);
       if (to_update.isPresent()) {
-        Joueur updated = new Joueur();
-        updated.update(joueur);
-        response.put("data", joueurService.insert(updated));
+        Equipe updated = new Equipe();
+        updated.update(equipe);
+        response.put("data", equipeService.insert(updated));
         return new ResponseEntity<>(response, HttpStatus.OK);
       }
-      response.put("error", "Joueur inexistant");
+      response.put("error", "Equipe inexistante");
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     } catch (Exception e) {
       response.put("error", e.getMessage());
@@ -97,11 +100,11 @@ public class JoueurController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Map<String, Object>> deleteById(@PathVariable("id") String id) {
+  public ResponseEntity<Map<String,Object>> deleteById(@PathVariable("id") String id) {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      joueurService.deleteById(id);
-      return new ResponseEntity<>(response, HttpStatus.OK);
+      equipeService.deleteById(id);
+      return new ResponseEntity<>(response,HttpStatus.OK);
     } catch (Exception e) {
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }

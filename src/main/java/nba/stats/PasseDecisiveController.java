@@ -1,7 +1,7 @@
 package nba.stats;
 
-import nba.stats.models.Joueur;
-import nba.stats.services.JoueurService;
+import nba.stats.models.PasseDecisive;
+import nba.stats.services.PasseDecisiveService;
 import nba.stats.tools.Util;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/joueurs")
-public class JoueurController {
-  @Autowired
-  private JoueurService joueurService;
-
+@RequestMapping("/passeDecisives")
+public class PasseDecisiveController {
+    @Autowired
+    private PasseDecisiveService passeDecisiveService;
+    
   @GetMapping
   public ResponseEntity<Map<String, Object>> list() {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      response.put("data", joueurService.list());
+      response.put("data", passeDecisiveService.list());
       return new ResponseEntity<>(response, HttpStatus.OK);
     } catch (Exception e) {
       response.put("error", e.getMessage());
@@ -41,15 +41,16 @@ public class JoueurController {
 
   @GetMapping("/{id}")
   public ResponseEntity<Map<String, Object>> findById(
-      @PathVariable("id") String id) {
+    @PathVariable("id") String id
+  ) {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      Optional<Joueur> joueur = joueurService.findById(id);
-      if (joueur.isPresent()) {
-        response.put("data", joueur.get());
+      Optional<PasseDecisive> passeDecisive = passeDecisiveService.findById(id);
+      if (passeDecisive.isPresent()) {
+        response.put("data", passeDecisive.get());
         return new ResponseEntity<>(response, HttpStatus.OK);
       }
-      response.put("error", "Joueur inexistant");
+      response.put("error", "PasseDecisive inexistant");
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     } catch (Exception e) {
       response.put("error", e.getMessage());
@@ -59,11 +60,12 @@ public class JoueurController {
 
   @PostMapping
   public ResponseEntity<Map<String, Object>> insert(
-      @RequestBody Joueur joueur) {
+    @RequestBody PasseDecisive passeDecisive
+  ) {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      joueur = Joueur.copyAndControle(joueur);
-      Joueur inserted = joueurService.insert(joueur);
+        passeDecisive = PasseDecisive.copyAndControle(passeDecisive);
+      PasseDecisive inserted = passeDecisiveService.insert(passeDecisive);
       response.put("data", inserted);
 
       return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -75,20 +77,21 @@ public class JoueurController {
 
   @PutMapping("/{id}")
   public ResponseEntity<Map<String, Object>> update(
-      @PathVariable("id") String id,
-      @RequestBody Joueur joueur) {
+    @PathVariable("id") String id,
+    @RequestBody PasseDecisive passeDecisive
+  ) {
 
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      joueur = Joueur.copyAndControle(joueur);
-      Optional<Joueur> to_update = joueurService.findById(id);
+        passeDecisive = PasseDecisive.copyAndControle(passeDecisive);
+      Optional<PasseDecisive> to_update = passeDecisiveService.findById(id);
       if (to_update.isPresent()) {
-        Joueur updated = new Joueur();
-        updated.update(joueur);
-        response.put("data", joueurService.insert(updated));
+        PasseDecisive updated = new PasseDecisive();
+        updated.update(passeDecisive);
+        response.put("data", passeDecisiveService.insert(updated));
         return new ResponseEntity<>(response, HttpStatus.OK);
       }
-      response.put("error", "Joueur inexistant");
+      response.put("error", "Passe Decisive inexistante");
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     } catch (Exception e) {
       response.put("error", e.getMessage());
@@ -97,11 +100,11 @@ public class JoueurController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Map<String, Object>> deleteById(@PathVariable("id") String id) {
+  public ResponseEntity<Map<String,Object>> deleteById(@PathVariable("id") String id) {
     Map<String, Object> response = Util.getDefaultResponse();
     try {
-      joueurService.deleteById(id);
-      return new ResponseEntity<>(response, HttpStatus.OK);
+      passeDecisiveService.deleteById(id);
+      return new ResponseEntity<>(response,HttpStatus.OK);
     } catch (Exception e) {
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -43,7 +43,7 @@ create or replace view v_match_equipe as(
 );
 create or replace  view v_statistiques as (
     select 
-    joueur.idjoueur,nomJoueur,equipe.idEquipe,equipe.nomEquipe,equipe.abreviation,sum(rpm)/count(matchEffectif.idMatchEffectif) as rpm, sum(pdpm)/count(matchEffectif.idMatchEffectif) as pdpm, sum(lf)/count(matchEffectif.idMatchEffectif) as lf, sum(deuxp)/count(matchEffectif.idMatchEffectif) as deuxp,sum(troisp)/count(matchEffectif.idMatchEffectif) as troisp,sum(ppm)/count(matchEffectif.idMatchEffectif) as ppm,sum(mpm)/count(matchEffectif.idMatchEffectif) as mpm,coalesce(count(matchEffectif.idMatchEffectif),0) as mj,v_match_equipe.m as m
+    joueur.idjoueur,equipe.idEquipe,sum(rpm)/count(matchEffectif.idMatchEffectif) as rpm, sum(pdpm)/count(matchEffectif.idMatchEffectif) as pdpm, sum(lf)/count(matchEffectif.idMatchEffectif) as lf, sum(deuxp)/count(matchEffectif.idMatchEffectif) as deuxp,sum(troisp)/count(matchEffectif.idMatchEffectif) as troisp,sum(ppm)/count(matchEffectif.idMatchEffectif) as ppm,sum(mpm)/count(matchEffectif.idMatchEffectif) as mpm,coalesce(count(matchEffectif.idMatchEffectif),0) as mj,v_match_equipe.m as m
     from joueur
     join equipe
         on joueur.idEquipeActuelle = equipe.idEquipe
@@ -57,5 +57,5 @@ create or replace  view v_statistiques as (
         on v_statistiques_effectif.idMatchEffectif = matchEffectif.idMatchEffectif
     join v_match_equipe
         on joueur.idEquipeActuelle = v_match_equipe.idEquipe
-    group by joueur.idjoueur,nomJoueur,equipe.idEquipe,equipe.nomEquipe,equipe.abreviation, v_match_equipe.m
+    group by joueur.idjoueur,equipe.idEquipe, v_match_equipe.m
 );
