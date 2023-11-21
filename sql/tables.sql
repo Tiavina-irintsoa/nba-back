@@ -20,7 +20,7 @@ create table match(
     lieu VARCHAR,
     dateDebut date,
     heureDebut time,
-    equipe1 integer not null references equipe(idEquipe)
+    equipe1 integer not null references equipe(idEquipe),
     equipe2 integer not null references equipe(idEquipe)
 );
 create table matchEffectif(
