@@ -55,3 +55,6 @@ create table possession(
 
 alter table possession 
 add column idpossession serial  primary key;
+
+alter table joueur_equipe
+add column idjoueur_quipe serial primary key;
