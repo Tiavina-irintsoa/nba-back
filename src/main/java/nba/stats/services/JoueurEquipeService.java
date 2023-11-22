@@ -6,27 +6,27 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import nba.stats.models.JoeurEquipeEquipe;
-import nba.stats.repositories.JoeurEquipeEquipeRepository;
+import nba.stats.models.JoueurEquipe;
+import nba.stats.repositories.JoueurEquipeRepository;
 
 @Service
-public class JoeurEquipeEquipeService {
+public class JoueurEquipeService {
     @Autowired
-    private JoeurEquipeEquipeRepository JoeurEquipeequipeRepository;
+    private JoueurEquipeRepository JoueurEquipeRepository;
 
-    public List<JoeurEquipeEquipe> list() {
-        return JoeurEquipeequipeRepository.findAll();
+    public List<JoueurEquipe> list() {
+        return JoueurEquipeRepository.findAll();
     }
 
-    public JoeurEquipeEquipe insert(JoeurEquipeEquipe JoeurEquipeequipe) {
-        return JoeurEquipeequipeRepository.save(JoeurEquipeequipe);
+    public JoueurEquipe insert(JoueurEquipe JoueurEquipe) {
+        return JoueurEquipeRepository.save(JoueurEquipe);
     }
 
-    public Optional<JoeurEquipeEquipe> findById(String id) {
-        return JoeurEquipeequipeRepository.findById(Integer.valueOf(id));
+    public Optional<JoueurEquipe> findById(String id) {
+        return JoueurEquipeRepository.findById(Integer.valueOf(id));
     }
 
     public void deleteById(String id) {
-        JoeurEquipeequipeRepository.deleteById(Integer.valueOf(id));
+        JoueurEquipeRepository.deleteById(Integer.valueOf(id));
     }
 }

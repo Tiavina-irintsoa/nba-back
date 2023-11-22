@@ -1,9 +1,15 @@
 package nba.stats.models;
 
-import java.lang.annotation.Inherited;
 import java.sql.Time;
 
-@Entity
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity(name = "v_statistiques")
 public class FicheJoueur {
     @Id
     private int idJoueur;
@@ -11,6 +17,7 @@ public class FicheJoueur {
     @JoinColumn(name="idjoueur",referencedColumnName="idjoueur",insertable=false,updatable=false)
     Joueur joueur;
 
+    @ManyToOne
     @JoinColumn(name="idequipe",referencedColumnName="idequipe",insertable=false,updatable=false)
     Equipe equipe;
 
@@ -25,12 +32,7 @@ public class FicheJoueur {
     double m;
 
 
-    public long getId() {
-        return id;
-    }
-    public void setId(long id) {
-        this.id = id;
-    }
+   
     public Joueur getJoueur() {
         return joueur;
     }
@@ -96,6 +98,12 @@ public class FicheJoueur {
     }
     public void setM(double m) {
         this.m = m;
+    }
+    public int getIdJoueur() {
+        return idJoueur;
+    }
+    public void setIdJoueur(int idJoueur) {
+        this.idJoueur = idJoueur;
     }
 
 

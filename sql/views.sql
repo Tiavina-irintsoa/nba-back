@@ -8,6 +8,7 @@ create or replace view v_2_points as (
     *
     from points where points = 2
 );
+create or replace view v_3_points as (select * from points where points = 3);
 
 create or replace view v_statistiques_effectif as(
     select 
@@ -31,7 +32,6 @@ create or replace view v_statistiques_effectif as(
      on possession.idMatchEffectif = matchEffectif.idMatchEffectif
     group by matchEffectif.idMatchEffectif,joueur.idjoueur
 );
-create or replace view v_3_points as (select * from points where points = 3);
 create or replace view v_match_equipe as(
     select
     idEquipe,coalesce(count(match),0) as m
@@ -43,7 +43,7 @@ create or replace view v_match_equipe as(
 );
 create or replace  view v_statistiques as (
     select 
-    joueur.idjoueur,equipe.idEquipe,sum(rpm)/count(matchEffectif.idMatchEffectif) as rpm, sum(pdpm)/count(matchEffectif.idMatchEffectif) as pdpm, sum(lf)/count(matchEffectif.idMatchEffectif) as lf, sum(deuxp)/count(matchEffectif.idMatchEffectif) as deuxp,sum(troisp)/count(matchEffectif.idMatchEffectif) as troisp,sum(ppm)/count(matchEffectif.idMatchEffectif) as ppm,sum(mpm)/count(matchEffectif.idMatchEffectif) as mpm,coalesce(count(matchEffectif.idMatchEffectif),0) as mj,v_match_equipe.m as m
+    joueur.idjoueur,equipe.idEquipe,coalesce(sum(rpm)/count(matchEffectif.idMatchEffectif),0) as rpm, coalesce(sum(pdpm)/count(matchEffectif.idMatchEffectif),0) as pdpm, coalesce(sum(lf)/count(matchEffectif.idMatchEffectif), 0) as lf, coalesce(sum(deuxp)/count(matchEffectif.idMatchEffectif), 0) as deuxp, coalesce(sum(troisp)/count(matchEffectif.idMatchEffectif), 0) as troisp,coalesce(sum(ppm)/count(matchEffectif.idMatchEffectif), 0) as ppm, coalesce(sum(mpm)/count(matchEffectif.idMatchEffectif), '00:00'::interval) as mpm, coalesce(count(matchEffectif.idMatchEffectif),0) as mj,v_match_equipe.m as m
     from joueur
     join equipe
         on joueur.idEquipeActuelle = equipe.idEquipe
